@@ -16,7 +16,6 @@ from torch.nn import functional as F
 from torch.utils import model_zoo
 from config import getConfig
 
-cfg = getConfig()
 
 def get_model_shape():
     if cfg.arch == '0':

@@ -27,7 +27,6 @@ from util.effi_utils import (
 
 from config import getConfig
 
-cfg = getConfig()
 
 VALID_MODELS = (
     'efficientnet-b0', 'efficientnet-b1', 'efficientnet-b2', 'efficientnet-b3',

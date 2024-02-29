@@ -9,8 +9,6 @@ import torch.nn.functional as F
 from config import getConfig
 from modules.conv_modules import BasicConv2d, DWConv, DWSConv
 
-cfg = getConfig()
-
 
 class Frequency_Edge_Module(nn.Module):
     def __init__(self, radius, channel):
