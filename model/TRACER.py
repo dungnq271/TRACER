@@ -15,7 +15,7 @@ class TRACER(nn.Module):
     def __init__(self, cfg):
         super().__init__()
         self.model = EfficientNet.from_pretrained(cfg, f'efficientnet-b{cfg.arch}', advprop=True)
-        self.block_idx, self.channels = get_model_shape()
+        self.block_idx, self.channels = get_model_shape(cfg.arch)
 
         # Receptive Field Blocks
         channels = [int(arg_c) for arg_c in cfg.RFB_aggregated_channel]
