@@ -45,8 +45,6 @@ def main(args):
             print(f'Test Loss:{test_loss:.3f} | MAX_F:{test_maxf:.4f} '
                   f'| AVG_F:{test_avgf:.4f} | MAE:{test_mae:.4f} | S_Measure:{test_s_m:.4f}')
     else:
-        save_path = os.path.join(args.model_path, args.dataset, f'TE{args.arch}_{str(args.exp_num)}')
-
         print('<----- Initializing inference mode ----->')
         Inference(args, save_path).test()
 
