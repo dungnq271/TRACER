@@ -11,10 +11,10 @@ from modules.conv_modules import BasicConv2d, DWConv, DWSConv
 
 
 class Frequency_Edge_Module(nn.Module):
-    def __init__(self, radius, channel):
+    def __init__(self, cfg, channel):
         super(Frequency_Edge_Module, self).__init__()
-        self.radius = radius
-        self.UAM = UnionAttentionModule(channel, only_channel_tracing=True)
+        self.radius = cfg.frequency_radius
+        self.UAM = UnionAttentionModule(cfg, channel, only_channel_tracing=True)
 
         # DWS + DWConv
         self.DWSConv = DWSConv(channel, channel, kernel=3, padding=1, kernels_per_layer=1)
@@ -135,10 +135,11 @@ class GlobalAvgPool(nn.Module):
 
 
 class UnionAttentionModule(nn.Module):
-    def __init__(self, n_channels, only_channel_tracing=False):
+    def __init__(self, cfg, n_channels, only_channel_tracing=False):
         super(UnionAttentionModule, self).__init__()
         self.GAP = GlobalAvgPool()
         self.confidence_ratio = cfg.gamma
+        self.denoise = cfg.denoise
         self.bn = nn.BatchNorm2d(n_channels)
         self.norm = nn.Sequential(
             nn.BatchNorm2d(n_channels),
@@ -284,7 +285,7 @@ class ObjectAttention(nn.Module):
         x = mask_ob.expand(-1, self.channel, -1, -1).mul(encoder_map)
 
         edge = mask_bg.clone()
-        edge[edge > cfg.denoise] = 0
+        edge[edge > self.denoise] = 0
         x = x + (edge * encoder_map)
 
         x = self.DWSConv(x)
