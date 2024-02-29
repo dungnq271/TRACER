@@ -24,7 +24,7 @@ class TRACER(nn.Module):
         self.rfb4 = RFB_Block(self.channels[3], channels[2])
 
         # Multi-level aggregation
-        self.agg = aggregation(channels)
+        self.agg = aggregation(cfg, channels)
 
         # Object Attention
         self.ObjectAttention2 = ObjectAttention(channel=self.channels[1], kernel_size=3)

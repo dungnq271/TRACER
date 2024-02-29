@@ -215,7 +215,7 @@ class UnionAttentionModule(nn.Module):
 
 
 class aggregation(nn.Module):
-    def __init__(self, channel):
+    def __init__(self, cfg, channel):
         super(aggregation, self).__init__()
         self.relu = nn.ReLU(True)
 
@@ -230,7 +230,7 @@ class aggregation(nn.Module):
         self.conv_concat3 = BasicConv2d((channel[0] + channel[1] + channel[2]),
                                         (channel[0] + channel[1] + channel[2]), 3, padding=1)
 
-        self.UAM = UnionAttentionModule(channel[0] + channel[1] + channel[2])
+        self.UAM = UnionAttentionModule(cfg, channel[0] + channel[1] + channel[2])
 
     def forward(self, e4, e3, e2):
         e4_1 = e4
