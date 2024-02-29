@@ -6,6 +6,7 @@ def getConfig():
     parser.add_argument('--exp_num', default=0, type=str, help='experiment_number')
     parser.add_argument('--dataset', type=str, default='DUTS', help='DUTS')
     parser.add_argument('--data_path', type=str, default='data/')
+    parser.add_argument('--save_path', type=str, default='results/')
 
     # Model parameter settings
     parser.add_argument('--arch', type=str, default='0', help='Backbone Architecture')
