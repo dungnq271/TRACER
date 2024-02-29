@@ -27,8 +27,8 @@ class TRACER(nn.Module):
         self.agg = aggregation(cfg, channels)
 
         # Object Attention
-        self.ObjectAttention2 = ObjectAttention(channel=self.channels[1], kernel_size=3)
-        self.ObjectAttention1 = ObjectAttention(channel=self.channels[0], kernel_size=3)
+        self.ObjectAttention2 = ObjectAttention(cfg, channel=self.channels[1], kernel_size=3)
+        self.ObjectAttention1 = ObjectAttention(cfg, channel=self.channels[0], kernel_size=3)
 
     def forward(self, inputs):
         B, C, H, W = inputs.size()

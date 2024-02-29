@@ -139,7 +139,6 @@ class UnionAttentionModule(nn.Module):
         super(UnionAttentionModule, self).__init__()
         self.GAP = GlobalAvgPool()
         self.confidence_ratio = cfg.gamma
-        self.denoise = cfg.denoise
         self.bn = nn.BatchNorm2d(n_channels)
         self.norm = nn.Sequential(
             nn.BatchNorm2d(n_channels),
@@ -250,8 +249,9 @@ class aggregation(nn.Module):
 
 
 class ObjectAttention(nn.Module):
-    def __init__(self, channel, kernel_size):
+    def __init__(self, cfg, channel, kernel_size):
         super(ObjectAttention, self).__init__()
+        self.denoise = cfg.denoise
         self.channel = channel
         self.DWSConv = DWSConv(channel, channel // 2, kernel=kernel_size, padding=1, kernels_per_layer=1)
         self.DWConv1 = nn.Sequential(
