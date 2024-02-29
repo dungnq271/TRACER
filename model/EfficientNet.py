@@ -146,15 +146,15 @@ class MBConvBlock(nn.Module):
 
 
 class EfficientNet(nn.Module):
-    def __init__(self, blocks_args=None, global_params=None):
+    def __init__(self, cfg, blocks_args=None, global_params=None):
         super().__init__()
         assert isinstance(blocks_args, list), 'blocks_args should be a list'
         assert len(blocks_args) > 0, 'block args must be greater than 0'
         self._global_params = global_params
         self._blocks_args = blocks_args
-        self.block_idx, self.channels = get_model_shape()
-        self.Frequency_Edge_Module1 = Frequency_Edge_Module(radius=cfg.frequency_radius,
-                                                            channel=self.channels[0])
+        self.block_idx, self.channels = get_model_shape(cfg.arch)
+        self.Frequency_Edge_Module1 = Frequency_Edge_Module(cfg, channel=self.channels[0])
+
         # Batch norm parameters
         bn_mom = 1 - self._global_params.batch_norm_momentum
         bn_eps = self._global_params.batch_norm_epsilon
@@ -258,7 +258,7 @@ class EfficientNet(nn.Module):
 
 
     @classmethod
-    def from_name(cls, model_name, in_channels=3, **override_params):
+    def from_name(cls, cfg, model_name, in_channels=3, **override_params):
         """create an efficientnet model according to name.
 
         Args:
@@ -278,12 +278,12 @@ class EfficientNet(nn.Module):
         """
         cls._check_model_name_is_valid(model_name)
         blocks_args, global_params = get_model_params(model_name, override_params)
-        model = cls(blocks_args, global_params)
+        model = cls(cfg, blocks_args, global_params)
         model._change_in_channels(in_channels)
         return model
 
     @classmethod
-    def from_pretrained(cls, model_name, weights_path=None, advprop=False,
+    def from_pretrained(cls, cfg, model_name, weights_path=None, advprop=False,
                         in_channels=3, num_classes=1000, **override_params):
         """create an efficientnet model according to name.
 
@@ -311,7 +311,7 @@ class EfficientNet(nn.Module):
         Returns:
             A pretrained TRACER-EfficientNet model.
         """
-        model = cls.from_name(model_name, num_classes=num_classes, **override_params)
+        model = cls.from_name(cfg, model_name, num_classes=num_classes, **override_params)
         load_pretrained_weights(model, model_name, weights_path=weights_path, advprop=advprop)
         model._change_in_channels(in_channels)
         return model
